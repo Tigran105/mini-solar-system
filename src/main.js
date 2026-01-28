@@ -31,3 +31,29 @@ window.addEventListener('resize', () => {
 
     renderer.setSize(window.innerWidth, window.innerHeight);
 });
+
+
+// Light
+const light = new THREE.PointLight(0xffffff, 2, 100);
+light.position.set(0, 0, 0); // центр сцены
+scene.add(light);
+
+
+// Sun
+const sunGeometry = new THREE.SphereGeometry(2, 32, 32);
+const sunMaterial = new THREE.MeshBasicMaterial({ color: 0xffaa00 }); // светится сам
+const sun = new THREE.Mesh(sunGeometry, sunMaterial);
+scene.add(sun);
+
+
+
+function animate() {
+    requestAnimationFrame(animate);
+
+    sun.rotation.y += 0.002;
+
+    renderer.render(scene, camera);
+}
+
+animate();
+
