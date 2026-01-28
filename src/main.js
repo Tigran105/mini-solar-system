@@ -108,3 +108,32 @@ planets.forEach(p => {
     // Rotate the planet around its own axis
     p.mesh.rotation.y += 0.01;
 });
+
+import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
+
+// Controls
+const controls = new OrbitControls(camera, renderer.domElement);
+controls.enableDamping = true; // smooth motion
+controls.dampingFactor = 0.05;
+controls.enableZoom = true;    // allow zoom
+
+controls.update();
+
+
+
+planets.forEach(p => {
+    const orbitGeometry = new THREE.RingGeometry(
+        p.mesh.position.x - 0.01, // inner radius
+        p.mesh.position.x + 0.01, // outer radius
+        64
+    );
+    const orbitMaterial = new THREE.MeshBasicMaterial({
+        color: 0xffffff,
+        side: THREE.DoubleSide,
+        transparent: true,
+        opacity: 0.2
+    });
+    const orbit = new THREE.Mesh(orbitGeometry, orbitMaterial);
+    orbit.rotation.x = Math.PI / 2; // rotate to lie flat
+    scene.add(orbit);
+});
