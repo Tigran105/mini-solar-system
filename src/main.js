@@ -137,3 +137,26 @@ planets.forEach(p => {
     orbit.rotation.x = Math.PI / 2; // rotate to lie flat
     scene.add(orbit);
 });
+
+// Stars
+const starsGeometry = new THREE.BufferGeometry();
+const starsCount = 1000;
+
+const positions = new Float32Array(starsCount * 3); // x, y, z for each star
+
+for (let i = 0; i < starsCount * 3; i++) {
+    positions[i] = (Math.random() - 0.5) * 200; // spread stars in space
+}
+
+starsGeometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+
+const starsMaterial = new THREE.PointsMaterial({
+    color: 0xffffff,
+    size: 0.5,
+});
+
+const stars = new THREE.Points(starsGeometry, starsMaterial);
+scene.add(stars);
+
+controls.update();
+renderer.render(scene, camera);
