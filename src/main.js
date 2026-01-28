@@ -57,3 +57,54 @@ function animate() {
 
 animate();
 
+// Create Planet 1
+const planetGeometry = new THREE.SphereGeometry(0.5, 16, 16);
+const planetMaterial = new THREE.MeshStandardMaterial({ color: 0x8888ff });
+const planet = new THREE.Mesh(planetGeometry, planetMaterial);
+
+// Create a group to orbit around the sun
+const planetGroup = new THREE.Group();
+planet.position.x = 5; // distance from the sun
+planetGroup.add(planet);
+scene.add(planetGroup);
+
+// Orbit speed
+const planetSpeed = 0.02;
+
+
+// Orbit the planet around the sun
+planetGroup.rotation.y += planetSpeed;
+
+// Rotate the planet around its own axis
+planet.rotation.y += 0.01;
+
+// Data for multiple planets
+const planetsData = [
+    { color: 0x8888ff, size: 0.5, distance: 5, speed: 0.02 },
+    { color: 0x88ff88, size: 0.7, distance: 8, speed: 0.015 },
+    { color: 0xff8888, size: 0.9, distance: 12, speed: 0.01 },
+];
+
+const planets = [];
+
+planetsData.forEach(data => {
+    const geo = new THREE.SphereGeometry(data.size, 16, 16);
+    const mat = new THREE.MeshStandardMaterial({ color: data.color });
+    const mesh = new THREE.Mesh(geo, mat);
+
+    // Group for orbit
+    const group = new THREE.Group();
+    mesh.position.x = data.distance;
+    group.add(mesh);
+    scene.add(group);
+
+    planets.push({ group, mesh, speed: data.speed });
+});
+
+planets.forEach(p => {
+    // Orbit the planet around the sun
+    p.group.rotation.y += p.speed;
+
+    // Rotate the planet around its own axis
+    p.mesh.rotation.y += 0.01;
+});
